@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as LeadsRouteImport } from './routes/leads'
 import { Route as ObrigadoRouteImport } from './routes/obrigado'
 import { Route as ApiLeadsRouteImport } from './routes/api/leads'
@@ -17,6 +18,11 @@ import { Route as ApiLeadsRouteImport } from './routes/api/leads'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EntrarRoute = EntrarRouteImport.update({
+  id: '/entrar',
+  path: '/entrar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LeadsRoute = LeadsRouteImport.update({
@@ -37,12 +43,14 @@ const ApiLeadsRoute = ApiLeadsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/entrar': typeof EntrarRoute
   '/leads': typeof LeadsRoute
   '/obrigado': typeof ObrigadoRoute
   '/api/leads': typeof ApiLeadsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/entrar': typeof EntrarRoute
   '/leads': typeof LeadsRoute
   '/obrigado': typeof ObrigadoRoute
   '/api/leads': typeof ApiLeadsRoute
@@ -50,20 +58,22 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/entrar': typeof EntrarRoute
   '/leads': typeof LeadsRoute
   '/obrigado': typeof ObrigadoRoute
   '/api/leads': typeof ApiLeadsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/leads' | '/obrigado' | '/api/leads'
+  fullPaths: '/' | '/entrar' | '/leads' | '/obrigado' | '/api/leads'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/leads' | '/obrigado' | '/api/leads'
-  id: '__root__' | '/' | '/leads' | '/obrigado' | '/api/leads'
+  to: '/' | '/entrar' | '/leads' | '/obrigado' | '/api/leads'
+  id: '__root__' | '/' | '/entrar' | '/leads' | '/obrigado' | '/api/leads'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EntrarRoute: typeof EntrarRoute
   LeadsRoute: typeof LeadsRoute
   ObrigadoRoute: typeof ObrigadoRoute
   ApiLeadsRoute: typeof ApiLeadsRoute
@@ -76,6 +86,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/entrar': {
+      id: '/entrar'
+      path: '/entrar'
+      fullPath: '/entrar'
+      preLoaderRoute: typeof EntrarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/leads': {
@@ -104,6 +121,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EntrarRoute: EntrarRoute,
   LeadsRoute: LeadsRoute,
   ObrigadoRoute: ObrigadoRoute,
   ApiLeadsRoute: ApiLeadsRoute,
@@ -111,13 +129,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
