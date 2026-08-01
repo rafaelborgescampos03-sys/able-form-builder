@@ -33,7 +33,7 @@ function Field({
 }) {
   return (
     <label className="group block">
-      <span className="mb-2.5 flex items-center gap-2 text-sm font-normal text-foreground">
+      <span className="mb-3 flex items-center gap-2 text-base font-medium text-foreground">
         <Icon className="h-4 w-4 text-champagne" strokeWidth={1.5} />
         {label}
         {hint ? (
@@ -195,7 +195,7 @@ export function AbleForm() {
           </div>
 
           <fieldset className="space-y-5">
-            <legend className="text-sm font-normal text-foreground">
+            <legend className="text-base font-medium text-foreground">
               Você é
             </legend>
             <div className="flex flex-wrap gap-2.5">
@@ -211,7 +211,7 @@ export function AbleForm() {
           </fieldset>
 
           <fieldset className="space-y-5">
-            <legend className="text-sm font-normal text-foreground">
+            <legend className="text-base font-medium text-foreground">
               O que você busca na ABLE
             </legend>
             <div className="flex flex-wrap gap-2.5">
