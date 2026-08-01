@@ -33,7 +33,7 @@ function Field({
 }) {
   return (
     <label className="group block">
-      <span className="mb-2.5 flex items-center gap-2 text-sm font-normal text-foreground">
+      <span className="mb-3 flex items-center gap-2 text-base font-medium text-foreground">
         <Icon className="h-4 w-4 text-champagne" strokeWidth={1.5} />
         {label}
         {hint ? (
