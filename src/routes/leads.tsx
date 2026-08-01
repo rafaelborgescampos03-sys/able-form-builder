@@ -56,6 +56,8 @@ function formatDate(value: string) {
 
 function LeadsPage() {
   const { data: leads } = useSuspenseQuery(leadsQueryOptions);
+  const router = useRouter();
+  const sair = useServerFn(adminLogout);
 
   return (
     <main className="min-h-screen bg-background px-6 py-16">
@@ -72,7 +74,18 @@ function LeadsPage() {
           <p className="mt-2 text-sm font-light text-muted-foreground">
             {leads.length} {leads.length === 1 ? "pessoa cadastrada" : "pessoas cadastradas"}
           </p>
+          <button
+            type="button"
+            onClick={async () => {
+              await sair();
+              await router.navigate({ to: "/entrar" });
+            }}
+            className="mt-6 rounded-full border border-border px-4 py-2 text-xs font-light text-muted-foreground transition-colors hover:border-champagne/40 hover:text-foreground"
+          >
+            Sair
+          </button>
         </header>
+
 
         {leads.length === 0 ? (
           <div className="rounded-2xl border border-border bg-graphite/40 px-6 py-16 text-center">
