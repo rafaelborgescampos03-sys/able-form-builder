@@ -1,24 +1,41 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AbleForm } from "@/components/AbleForm";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "ABLE — Cadastro no ecossistema" },
+      {
+        name: "description",
+        content:
+          "Cadastre-se na ABLE: ecossistema de empreendedores, executivos e investidores. Networking, conteúdo, eventos e parcerias.",
+      },
+      { property: "og:title", content: "ABLE — Cadastro no ecossistema" },
+      {
+        property: "og:description",
+        content:
+          "Cadastre-se na ABLE: networking, conteúdo, eventos e novas oportunidades.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className="min-h-screen bg-background">
+      <section className="mx-auto max-w-xl px-6 pt-24 pb-4">
+        <h1 className="font-display text-4xl font-light tracking-tight text-foreground">
+          Ambitious. Builders. Leaders. Ecosystem.
+        </h1>
+        <p className="mt-4 text-sm font-light leading-relaxed text-muted-foreground">
+          Um ecossistema de pessoas que constroem. Deixe seus dados no formulário
+          abaixo para entrar em contato com a ABLE.
+        </p>
+      </section>
+      <AbleForm />
+    </main>
   );
 }
