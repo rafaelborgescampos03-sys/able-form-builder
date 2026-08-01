@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
+import { Check } from "lucide-react";
 import logoAsset from "@/assets/able-logo-f.png.asset.json";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 
 const PERFIS = ["Empreendedor", "Executivo", "Estudante", "Investidor", "Outro"];
 const INTERESSES = [
@@ -15,9 +12,61 @@ const INTERESSES = [
   "Parcerias",
 ];
 
+function Field({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <label className="group block">
+      <span className="mb-3 block text-[0.7rem] font-light uppercase tracking-[0.22em] text-muted-foreground transition-colors group-focus-within:text-champagne">
+        {label}
+      </span>
+      {children}
+    </label>
+  );
+}
+
+const inputClass =
+  "w-full border-0 border-b border-border bg-transparent pb-3 text-base font-light text-foreground outline-none transition-colors placeholder:text-muted-foreground/50 focus:border-champagne";
+
+function Chip({
+  label,
+  active,
+  onClick,
+}: {
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={`group inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-light transition-all duration-300 ${
+        active
+          ? "border-champagne/60 bg-champagne/10 text-champagne"
+          : "border-border text-muted-foreground hover:border-champagne-dim/50 hover:text-foreground"
+      }`}
+    >
+      <Check
+        className={`h-3 w-3 transition-all duration-300 ${
+          active ? "opacity-100" : "-ml-5 w-0 opacity-0"
+        }`}
+        strokeWidth={1.5}
+      />
+      {label}
+    </button>
+  );
+}
+
 export function AbleForm() {
   const [perfil, setPerfil] = useState("");
   const [interesses, setInteresses] = useState<string[]>([]);
+  const [enviado, setEnviado] = useState(false);
 
   const toggleInteresse = (item: string) =>
     setInteresses((prev) =>
@@ -26,7 +75,8 @@ export function AbleForm() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const data = new FormData(form);
     const nome = String(data.get("nome") ?? "").trim();
     const whatsapp = String(data.get("whatsapp") ?? "").trim();
     const email = String(data.get("email") ?? "").trim();
@@ -48,114 +98,145 @@ export function AbleForm() {
       return;
     }
 
-    const form = e.currentTarget;
-    toast.success("Cadastro enviado. Em breve entraremos em contato.");
     form.reset();
     setPerfil("");
     setInteresses([]);
+    setEnviado(true);
   };
 
+  if (enviado) {
+    return (
+      <section className="relative overflow-hidden border-t border-border bg-background px-6 py-32">
+        <div className="mx-auto max-w-md text-center">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-champagne/40">
+            <Check className="h-5 w-5 text-champagne" strokeWidth={1.25} />
+          </div>
+          <h2 className="mt-8 font-display text-3xl font-light tracking-tight text-foreground">
+            Recebemos seu cadastro
+          </h2>
+          <p className="mt-3 text-sm font-light leading-relaxed text-muted-foreground">
+            Em breve entramos em contato pelo WhatsApp.
+          </p>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="border-y border-border bg-background py-20">
-      <div className="mx-auto w-full max-w-xl px-6">
-        <img
-          src={logoAsset.url}
-          alt="ABLE — Ambitious, Builders, Leaders, Ecosystem"
-          className="h-10 w-auto object-contain"
-        />
+    <section className="relative overflow-hidden border-t border-border bg-background px-6 py-24">
+      {/* halo champanhe sutil */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-[0.07] blur-3xl"
+        style={{ background: "var(--champagne)" }}
+      />
 
-        <h2 className="mt-10 font-display text-3xl font-light tracking-tight text-foreground">
-          Faça parte da ABLE
-        </h2>
-        <p className="mt-2 text-sm font-light text-muted-foreground">
-          Preencha os campos abaixo. Leva menos de um minuto.
-        </p>
+      <div className="relative mx-auto w-full max-w-lg">
+        <header className="text-center">
+          <img
+            src={logoAsset.url}
+            alt="ABLE — Ambitious, Builders, Leaders, Ecosystem"
+            className="mx-auto h-10 w-auto object-contain mix-blend-screen"
+          />
+          <div className="mx-auto mt-8 h-px w-10 bg-champagne/40" />
+          <h2 className="mt-8 font-display text-[2rem] font-light leading-tight tracking-tight text-foreground">
+            Faça parte do ecossistema
+          </h2>
+          <p className="mx-auto mt-4 max-w-xs text-sm font-light leading-relaxed text-muted-foreground">
+            Três campos essenciais. O resto é opcional.
+          </p>
+        </header>
 
-        <form onSubmit={handleSubmit} className="mt-10 space-y-8">
-          <div className="space-y-5">
-            <div className="space-y-2">
-              <Label htmlFor="nome" className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                Nome completo*
-              </Label>
-              <Input id="nome" name="nome" maxLength={100} autoComplete="name" />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="whatsapp" className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                WhatsApp*
-              </Label>
-              <Input id="whatsapp" name="whatsapp" inputMode="tel" maxLength={20} placeholder="(00) 00000-0000" />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                E-mail*
-              </Label>
-              <Input id="email" name="email" type="email" maxLength={255} autoComplete="email" />
-            </div>
+        <form onSubmit={handleSubmit} className="mt-16 space-y-14">
+          <div className="space-y-10">
+            <Field label="Nome completo">
+              <input
+                name="nome"
+                maxLength={100}
+                autoComplete="name"
+                placeholder="Como podemos te chamar"
+                className={inputClass}
+              />
+            </Field>
+            <Field label="WhatsApp">
+              <input
+                name="whatsapp"
+                inputMode="tel"
+                maxLength={20}
+                placeholder="(00) 00000-0000"
+                className={inputClass}
+              />
+            </Field>
+            <Field label="E-mail">
+              <input
+                name="email"
+                type="email"
+                maxLength={255}
+                autoComplete="email"
+                placeholder="seu@email.com"
+                className={inputClass}
+              />
+            </Field>
           </div>
 
-          <fieldset className="space-y-3">
-            <legend className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+          <fieldset className="space-y-5">
+            <legend className="text-[0.7rem] font-light uppercase tracking-[0.22em] text-muted-foreground">
               Você é
             </legend>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2.5">
               {PERFIS.map((item) => (
-                <button
+                <Chip
                   key={item}
-                  type="button"
+                  label={item}
+                  active={perfil === item}
                   onClick={() => setPerfil(item)}
-                  aria-pressed={perfil === item}
-                  className={`border px-4 py-2 text-sm font-light transition-colors ${
-                    perfil === item
-                      ? "border-champagne text-champagne"
-                      : "border-border text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {item}
-                </button>
+                />
               ))}
             </div>
           </fieldset>
 
-          <div className="space-y-2">
-            <Label htmlFor="empresa" className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-              Nome da empresa (opcional)
-            </Label>
-            <Input id="empresa" name="empresa" maxLength={120} />
-          </div>
-
-          <fieldset className="space-y-3">
-            <legend className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-              O que você busca na ABLE?
+          <fieldset className="space-y-5">
+            <legend className="text-[0.7rem] font-light uppercase tracking-[0.22em] text-muted-foreground">
+              O que você busca na ABLE
             </legend>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2.5">
               {INTERESSES.map((item) => (
-                <button
+                <Chip
                   key={item}
-                  type="button"
+                  label={item}
+                  active={interesses.includes(item)}
                   onClick={() => toggleInteresse(item)}
-                  aria-pressed={interesses.includes(item)}
-                  className={`border px-4 py-2 text-sm font-light transition-colors ${
-                    interesses.includes(item)
-                      ? "border-champagne text-champagne"
-                      : "border-border text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {item}
-                </button>
+                />
               ))}
             </div>
           </fieldset>
 
-          <div className="space-y-2">
-            <Label htmlFor="sobre" className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-              Sobre você
-            </Label>
-            <Textarea id="sobre" name="sobre" rows={4} maxLength={1000} />
+          <div className="space-y-10">
+            <Field label="Empresa · opcional">
+              <input
+                name="empresa"
+                maxLength={120}
+                placeholder="Nome da empresa"
+                className={inputClass}
+              />
+            </Field>
+            <Field label="Sobre você · opcional">
+              <textarea
+                name="sobre"
+                rows={3}
+                maxLength={1000}
+                placeholder="Conte em poucas linhas"
+                className={`${inputClass} resize-none`}
+              />
+            </Field>
           </div>
 
-          <Button type="submit" className="w-full rounded-none py-6 text-xs uppercase tracking-[0.2em]">
+          <button
+            type="submit"
+            className="group relative w-full overflow-hidden rounded-full bg-champagne px-8 py-4 text-[0.7rem] uppercase tracking-[0.28em] text-background transition-opacity hover:opacity-90"
+          >
             Enviar cadastro
-          </Button>
+          </button>
         </form>
       </div>
     </section>
