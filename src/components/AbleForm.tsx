@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { Check } from "lucide-react";
+import {
+  Check,
+  User,
+  Phone,
+  Mail,
+  Building2,
+  MessageSquare,
+  type LucideIcon,
+} from "lucide-react";
 import logoAsset from "@/assets/able-logo-f.png.asset.json";
 
 const PERFIS = ["Empreendedor", "Executivo", "Estudante", "Investidor", "Outro"];
@@ -159,7 +167,7 @@ export function AbleForm() {
 
         <form onSubmit={handleSubmit} className="mt-16 space-y-14">
           <div className="space-y-10">
-            <Field label="Nome completo">
+            <Field label="Nome completo" icon={User}>
               <input
                 name="nome"
                 maxLength={100}
@@ -168,7 +176,7 @@ export function AbleForm() {
                 className={inputClass}
               />
             </Field>
-            <Field label="WhatsApp">
+            <Field label="WhatsApp" icon={Phone}>
               <input
                 name="whatsapp"
                 inputMode="tel"
@@ -177,7 +185,7 @@ export function AbleForm() {
                 className={inputClass}
               />
             </Field>
-            <Field label="E-mail">
+            <Field label="E-mail" icon={Mail}>
               <input
                 name="email"
                 type="email"
@@ -190,7 +198,7 @@ export function AbleForm() {
           </div>
 
           <fieldset className="space-y-5">
-            <legend className="text-[0.7rem] font-light uppercase tracking-[0.22em] text-muted-foreground">
+            <legend className="text-sm font-normal text-foreground">
               Você é
             </legend>
             <div className="flex flex-wrap gap-2.5">
@@ -206,7 +214,7 @@ export function AbleForm() {
           </fieldset>
 
           <fieldset className="space-y-5">
-            <legend className="text-[0.7rem] font-light uppercase tracking-[0.22em] text-muted-foreground">
+            <legend className="text-sm font-normal text-foreground">
               O que você busca na ABLE
             </legend>
             <div className="flex flex-wrap gap-2.5">
@@ -222,7 +230,7 @@ export function AbleForm() {
           </fieldset>
 
           <div className="space-y-10">
-            <Field label="Empresa · opcional">
+            <Field label="Empresa" icon={Building2} hint="opcional">
               <input
                 name="empresa"
                 maxLength={120}
@@ -230,7 +238,7 @@ export function AbleForm() {
                 className={inputClass}
               />
             </Field>
-            <Field label="Sobre você · opcional">
+            <Field label="Sobre você" icon={MessageSquare} hint="opcional">
               <textarea
                 name="sobre"
                 rows={3}
