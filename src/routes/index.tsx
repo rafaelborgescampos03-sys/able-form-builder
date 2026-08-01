@@ -26,14 +26,15 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <main className="min-h-screen bg-background">
-      <section className="mx-auto max-w-xl px-6 pt-24 pb-4">
-        <h1 className="font-display text-4xl font-light tracking-tight text-foreground">
-          Ambitious. Builders. Leaders. Ecosystem.
-        </h1>
-        <p className="mt-4 text-sm font-light leading-relaxed text-muted-foreground">
-          Um ecossistema de pessoas que constroem. Deixe seus dados no formulário
-          abaixo para entrar em contato com a ABLE.
+      <section className="mx-auto max-w-lg px-6 pt-28 pb-20 text-center">
+        <p className="text-[0.7rem] font-light uppercase tracking-[0.3em] text-champagne-dim">
+          Ambitious · Builders · Leaders · Ecosystem
         </p>
+        <h1 className="mt-8 font-display text-4xl font-light leading-[1.15] tracking-tight text-foreground">
+          Um ecossistema de
+          <br />
+          quem constrói.
+        </h1>
       </section>
       <AbleForm />
     </main>
