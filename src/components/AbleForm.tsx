@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { Check } from "lucide-react";
+import {
+  Check,
+  User,
+  Phone,
+  Mail,
+  Building2,
+  MessageSquare,
+  type LucideIcon,
+} from "lucide-react";
 import logoAsset from "@/assets/able-logo-f.png.asset.json";
 
 const PERFIS = ["Empreendedor", "Executivo", "Estudante", "Investidor", "Outro"];
@@ -14,23 +22,33 @@ const INTERESSES = [
 
 function Field({
   label,
+  icon: Icon,
+  hint,
   children,
 }: {
   label: string;
+  icon: LucideIcon;
+  hint?: string;
   children: React.ReactNode;
 }) {
   return (
     <label className="group block">
-      <span className="mb-3 block text-[0.7rem] font-light uppercase tracking-[0.22em] text-muted-foreground transition-colors group-focus-within:text-champagne">
+      <span className="mb-2.5 flex items-center gap-2 text-sm font-normal text-foreground">
+        <Icon className="h-4 w-4 text-champagne" strokeWidth={1.5} />
         {label}
+        {hint ? (
+          <span className="text-xs font-light text-muted-foreground">{hint}</span>
+        ) : null}
       </span>
-      {children}
+      <div className="rounded-2xl border border-border bg-graphite/70 px-4 py-1 transition-colors group-focus-within:border-champagne/50">
+        {children}
+      </div>
     </label>
   );
 }
 
 const inputClass =
-  "w-full border-0 border-b border-border bg-transparent pb-3 text-base font-light text-foreground outline-none transition-colors placeholder:text-muted-foreground/50 focus:border-champagne";
+  "w-full border-0 bg-transparent py-3 text-base font-light text-foreground outline-none placeholder:font-light placeholder:text-muted-foreground";
 
 function Chip({
   label,
@@ -149,7 +167,7 @@ export function AbleForm() {
 
         <form onSubmit={handleSubmit} className="mt-16 space-y-14">
           <div className="space-y-10">
-            <Field label="Nome completo">
+            <Field label="Nome completo" icon={User}>
               <input
                 name="nome"
                 maxLength={100}
@@ -158,7 +176,7 @@ export function AbleForm() {
                 className={inputClass}
               />
             </Field>
-            <Field label="WhatsApp">
+            <Field label="WhatsApp" icon={Phone}>
               <input
                 name="whatsapp"
                 inputMode="tel"
@@ -167,7 +185,7 @@ export function AbleForm() {
                 className={inputClass}
               />
             </Field>
-            <Field label="E-mail">
+            <Field label="E-mail" icon={Mail}>
               <input
                 name="email"
                 type="email"
@@ -180,7 +198,7 @@ export function AbleForm() {
           </div>
 
           <fieldset className="space-y-5">
-            <legend className="text-[0.7rem] font-light uppercase tracking-[0.22em] text-muted-foreground">
+            <legend className="text-sm font-normal text-foreground">
               Você é
             </legend>
             <div className="flex flex-wrap gap-2.5">
@@ -196,7 +214,7 @@ export function AbleForm() {
           </fieldset>
 
           <fieldset className="space-y-5">
-            <legend className="text-[0.7rem] font-light uppercase tracking-[0.22em] text-muted-foreground">
+            <legend className="text-sm font-normal text-foreground">
               O que você busca na ABLE
             </legend>
             <div className="flex flex-wrap gap-2.5">
@@ -212,7 +230,7 @@ export function AbleForm() {
           </fieldset>
 
           <div className="space-y-10">
-            <Field label="Empresa · opcional">
+            <Field label="Empresa" icon={Building2} hint="opcional">
               <input
                 name="empresa"
                 maxLength={120}
@@ -220,7 +238,7 @@ export function AbleForm() {
                 className={inputClass}
               />
             </Field>
-            <Field label="Sobre você · opcional">
+            <Field label="Sobre você" icon={MessageSquare} hint="opcional">
               <textarea
                 name="sobre"
                 rows={3}
