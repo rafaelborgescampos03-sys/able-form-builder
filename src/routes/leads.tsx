@@ -1,7 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { listLeads } from "@/lib/leads.functions";
+import { adminLogout } from "@/lib/admin.functions";
 import logoAsset from "@/assets/able-logo-f.png.asset.json";
+
 
 const leadsQueryOptions = queryOptions({
   queryKey: ["leads"],
