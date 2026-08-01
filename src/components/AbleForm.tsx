@@ -195,7 +195,7 @@ export function AbleForm() {
           </div>
 
           <fieldset className="space-y-5">
-            <legend className="text-sm font-normal text-foreground">
+            <legend className="text-base font-medium text-foreground">
               Você é
             </legend>
             <div className="flex flex-wrap gap-2.5">
