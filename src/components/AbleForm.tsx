@@ -136,7 +136,7 @@ export function AbleForm() {
           <img
             src={logoAsset.url}
             alt="ABLE — Ambitious, Builders, Leaders, Ecosystem"
-            className="mx-auto h-10 w-auto object-contain"
+            className="mx-auto h-10 w-auto object-contain mix-blend-screen"
           />
           <div className="mx-auto mt-8 h-px w-10 bg-champagne/40" />
           <h2 className="mt-8 font-display text-[2rem] font-light leading-tight tracking-tight text-foreground">
