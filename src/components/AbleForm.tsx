@@ -160,9 +160,6 @@ export function AbleForm() {
           <h2 className="mt-8 font-display text-[2rem] font-light leading-tight tracking-tight text-foreground">
             Entre no radar da ABLE
           </h2>
-          <p className="mx-auto mt-4 max-w-xs text-sm font-light leading-relaxed text-muted-foreground">
-            Três campos essenciais. O resto é opcional.
-          </p>
         </header>
 
         <form onSubmit={handleSubmit} className="mt-16 space-y-14">
