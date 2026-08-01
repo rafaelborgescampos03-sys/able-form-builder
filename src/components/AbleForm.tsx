@@ -24,22 +24,33 @@ export function AbleForm() {
       prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item],
     );
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     const nome = String(data.get("nome") ?? "").trim();
     const whatsapp = String(data.get("whatsapp") ?? "").trim();
     const email = String(data.get("email") ?? "").trim();
 
-    if (!nome || nome.length > 100) return toast.error("Informe seu nome completo.");
-    if (whatsapp.replace(/\D/g, "").length < 10)
-      return toast.error("Informe um WhatsApp válido.");
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 255)
-      return toast.error("Informe um e-mail válido.");
-    if (!perfil) return toast.error("Selecione o seu perfil.");
+    if (!nome || nome.length > 100) {
+      toast.error("Informe seu nome completo.");
+      return;
+    }
+    if (whatsapp.replace(/\D/g, "").length < 10) {
+      toast.error("Informe um WhatsApp válido.");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 255) {
+      toast.error("Informe um e-mail válido.");
+      return;
+    }
+    if (!perfil) {
+      toast.error("Selecione o seu perfil.");
+      return;
+    }
 
+    const form = e.currentTarget;
     toast.success("Cadastro enviado. Em breve entraremos em contato.");
-    e.currentTarget.reset();
+    form.reset();
     setPerfil("");
     setInteresses([]);
   };
