@@ -4,13 +4,13 @@ import { AbleForm } from "@/components/AbleForm";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "ABLE — Cadastro no ecossistema" },
+      { title: "ABLE — Entre no radar" },
       {
         name: "description",
         content:
           "Cadastre-se na ABLE: ecossistema de empreendedores, executivos e investidores. Networking, conteúdo, eventos e parcerias.",
       },
-      { property: "og:title", content: "ABLE — Cadastro no ecossistema" },
+      { property: "og:title", content: "ABLE — Entre no radar" },
       {
         property: "og:description",
         content:
