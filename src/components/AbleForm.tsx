@@ -7,9 +7,12 @@ import {
   Mail,
   Building2,
   MessageSquare,
+  Loader2,
   type LucideIcon,
 } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
 import logoAsset from "@/assets/able-logo-f.png.asset.json";
+import { submitLead } from "@/lib/leads.functions";
 
 const PERFIS = ["Empreendedor", "Executivo", "Estudante", "Investidor", "Outro"];
 const INTERESSES = [
@@ -84,20 +87,23 @@ function Chip({
 export function AbleForm() {
   const [perfil, setPerfil] = useState("");
   const [interesses, setInteresses] = useState<string[]>([]);
-  const [enviado, setEnviado] = useState(false);
+  const [enviando, setEnviando] = useState(false);
+  const enviar = useServerFn(submitLead);
 
   const toggleInteresse = (item: string) =>
     setInteresses((prev) =>
       prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item],
     );
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
     const nome = String(data.get("nome") ?? "").trim();
     const whatsapp = String(data.get("whatsapp") ?? "").trim();
     const email = String(data.get("email") ?? "").trim();
+    const empresa = String(data.get("empresa") ?? "").trim();
+    const sobre = String(data.get("sobre") ?? "").trim();
 
     if (!nome || nome.length > 100) {
       toast.error("Informe seu nome completo.");
@@ -116,29 +122,29 @@ export function AbleForm() {
       return;
     }
 
-    form.reset();
-    setPerfil("");
-    setInteresses([]);
-    setEnviado(true);
+    setEnviando(true);
+    try {
+      await enviar({
+        data: {
+          nome,
+          whatsapp,
+          email,
+          perfil,
+          interesses,
+          empresa: empresa || undefined,
+          sobre: sobre || undefined,
+        },
+      });
+      form.reset();
+      setPerfil("");
+      setInteresses([]);
+      window.location.href = "/obrigado";
+    } catch {
+      toast.error("Não foi possível enviar. Tente novamente.");
+    } finally {
+      setEnviando(false);
+    }
   };
-
-  if (enviado) {
-    return (
-      <section className="relative overflow-hidden border-t border-border bg-background px-6 py-32">
-        <div className="mx-auto max-w-md text-center">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-champagne/40">
-            <Check className="h-5 w-5 text-champagne" strokeWidth={1.25} />
-          </div>
-          <h2 className="mt-8 font-display text-3xl font-light tracking-tight text-foreground">
-            Recebemos seu cadastro
-          </h2>
-          <p className="mt-3 text-sm font-light leading-relaxed text-muted-foreground">
-            Em breve entramos em contato pelo WhatsApp.
-          </p>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section className="relative overflow-hidden border-t border-border bg-background px-6 py-24">
@@ -162,7 +168,12 @@ export function AbleForm() {
           </h2>
         </header>
 
-        <form onSubmit={handleSubmit} className="mt-16 space-y-14">
+        <form
+          method="POST"
+          action="/api/leads"
+          onSubmit={handleSubmit}
+          className="mt-16 space-y-14"
+        >
           <div className="space-y-10">
             <Field label="Nome completo" icon={User}>
               <input
@@ -195,9 +206,8 @@ export function AbleForm() {
           </div>
 
           <fieldset className="space-y-5">
-            <legend className="text-base font-medium text-foreground">
-              Você é
-            </legend>
+            <legend className="text-base font-medium text-foreground">Você é</legend>
+            <input type="hidden" name="perfil" value={perfil} />
             <div className="flex flex-wrap gap-2.5">
               {PERFIS.map((item) => (
                 <Chip
@@ -214,6 +224,7 @@ export function AbleForm() {
             <legend className="text-base font-medium text-foreground">
               O que você busca na ABLE
             </legend>
+            <input type="hidden" name="interesses" value={interesses.join(",")} />
             <div className="flex flex-wrap gap-2.5">
               {INTERESSES.map((item) => (
                 <Chip
@@ -248,9 +259,17 @@ export function AbleForm() {
 
           <button
             type="submit"
-            className="group relative w-full overflow-hidden rounded-full bg-champagne px-8 py-4 text-[0.7rem] uppercase tracking-[0.28em] text-background transition-opacity hover:opacity-90"
+            disabled={enviando}
+            className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-champagne px-8 py-4 text-[0.7rem] uppercase tracking-[0.28em] text-background transition-opacity hover:opacity-90 disabled:opacity-60"
           >
-            Enviar cadastro
+            {enviando ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" strokeWidth={1.5} />
+                Enviando...
+              </>
+            ) : (
+              "Enviar cadastro"
+            )}
           </button>
         </form>
       </div>

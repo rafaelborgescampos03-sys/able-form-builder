@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AbleForm } from "@/components/AbleForm";
+import { ClientOnly } from "@/components/ClientOnly";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,7 +27,9 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <main className="min-h-screen bg-background">
-      <AbleForm />
+      <ClientOnly>
+        <AbleForm />
+      </ClientOnly>
     </main>
   );
 }
