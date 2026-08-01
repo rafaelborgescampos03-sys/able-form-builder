@@ -14,23 +14,33 @@ const INTERESSES = [
 
 function Field({
   label,
+  icon: Icon,
+  hint,
   children,
 }: {
   label: string;
+  icon: LucideIcon;
+  hint?: string;
   children: React.ReactNode;
 }) {
   return (
     <label className="group block">
-      <span className="mb-3 block text-[0.7rem] font-light uppercase tracking-[0.22em] text-muted-foreground transition-colors group-focus-within:text-champagne">
+      <span className="mb-2.5 flex items-center gap-2 text-sm font-normal text-foreground">
+        <Icon className="h-4 w-4 text-champagne" strokeWidth={1.5} />
         {label}
+        {hint ? (
+          <span className="text-xs font-light text-muted-foreground">{hint}</span>
+        ) : null}
       </span>
-      {children}
+      <div className="rounded-2xl border border-border bg-graphite/70 px-4 py-1 transition-colors group-focus-within:border-champagne/50">
+        {children}
+      </div>
     </label>
   );
 }
 
 const inputClass =
-  "w-full border-0 border-b border-border bg-transparent pb-3 text-base font-light text-foreground outline-none transition-colors placeholder:text-muted-foreground/50 focus:border-champagne";
+  "w-full border-0 bg-transparent py-3 text-base font-light text-foreground outline-none placeholder:font-light placeholder:text-muted-foreground";
 
 function Chip({
   label,
