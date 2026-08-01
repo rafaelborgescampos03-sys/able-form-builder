@@ -26,16 +26,6 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <main className="min-h-screen bg-background">
-      <section className="mx-auto max-w-lg px-6 pt-28 pb-20 text-center">
-        <p className="text-[0.7rem] font-light uppercase tracking-[0.3em] text-champagne-dim">
-          Ambitious · Builders · Leaders · Ecosystem
-        </p>
-        <h1 className="mt-8 font-display text-4xl font-light leading-[1.15] tracking-tight text-foreground">
-          Um ecossistema de
-          <br />
-          quem constrói.
-        </h1>
-      </section>
       <AbleForm />
     </main>
   );
