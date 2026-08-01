@@ -34,7 +34,10 @@ export const submitLead = createServerFn({ method: "POST" })
   });
 
 export const listLeads = createServerFn({ method: "GET" }).handler(async () => {
+  const { requireAdmin } = await import("./admin.server");
+  await requireAdmin();
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
 
   const { data, error } = await supabaseAdmin
     .from("leads")
